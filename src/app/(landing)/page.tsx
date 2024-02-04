@@ -1,6 +1,6 @@
-import Heading from "./__components/Heading";
-import Heroes from "./__components/Heroes";
-import Footer from "./__components/Footer";
+import Footer from "./_components/Footer";
+import Heading from "./_components/Heading";
+import Heroes from "./_components/Heroes";
 
 export default function Home() {
     return (

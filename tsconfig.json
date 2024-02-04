@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/convex/_generated/auth.config.js"
+    "convex/auth.config.js"
   ],
   "exclude": [
     "node_modules"
