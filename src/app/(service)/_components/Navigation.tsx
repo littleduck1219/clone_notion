@@ -5,6 +5,7 @@ import { ChevronsLeft, MenuIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, MouseEvent, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
+import UserItem from "./UserItem";
 
 export default function Navigation() {
     const isMobile = useMediaQuery("(max-width: 768px)");
@@ -87,7 +88,7 @@ export default function Navigation() {
             <aside
                 ref={sidebarRef}
                 className={cn(
-                    "group relative z-[99999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
+                    "group relative z-[9999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
                     isResetting && "transition-all duration-300 ease-in-out",
                     isMobile && "w-0",
                 )}
@@ -103,7 +104,7 @@ export default function Navigation() {
                     <ChevronsLeft className="h-6 w-6" />
                 </div>
                 <div>
-                    <p>Action</p>
+                    <UserItem />
                 </div>
                 <div className="mt-4">
                     <p>Document</p>
