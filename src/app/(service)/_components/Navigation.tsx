@@ -1,20 +1,22 @@
 "use client";
 
 import { api } from "@/../convex/_generated/api";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { useMutation, useQuery } from "convex/react";
-import { ChevronsLeft, MenuIcon, PlusCircle } from "lucide-react";
+import { useMutation } from "convex/react";
+import { ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, MouseEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
+import DocumentList from "./DocumentList";
 import Item from "./Item";
 import UserItem from "./UserItem";
 
 export default function Navigation() {
     const isMobile = useMediaQuery("(max-width: 768px)");
     const pathname = usePathname();
-    const documents = useQuery(api.documents.get);
+
     const create = useMutation(api.documents.create);
     const isResizingRef = useRef(false);
     const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -104,7 +106,7 @@ export default function Navigation() {
             <aside
                 ref={sidebarRef}
                 className={cn(
-                    "group relative z-[9999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
+                    "group/sidebar relative z-[9999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
                     isResetting && "transition-all duration-300 ease-in-out",
                     isMobile && "w-0",
                 )}
@@ -121,10 +123,21 @@ export default function Navigation() {
                 </div>
                 <div>
                     <UserItem />
+                    <Item onClick={() => {}} label="Search" icon={Search} isSearch />
+                    <Item onClick={() => {}} label="Settings" icon={Settings} />
                     <Item onClick={handleCreate} label="New Document" icon={PlusCircle} />
                 </div>
                 <div className="mt-4">
-                    {documents?.map((document) => <p key={document._id}>{document.title}</p>)}
+                    <DocumentList />
+                    <Item onClick={handleCreate} label="Add a document" icon={Plus} />
+                    <Popover>
+                        <PopoverTrigger className="mt-4 w-full">
+                            <Item label="Trash" icon={Trash} />
+                        </PopoverTrigger>
+                        <PopoverContent className="w-72 p-0" side={isMobile ? "bottom" : "right"}>
+                            <p>Trash</p>
+                        </PopoverContent>
+                    </Popover>
                 </div>
                 <div
                     onMouseDown={handleMouseDown}
