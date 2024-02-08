@@ -2,6 +2,7 @@
 
 import { api } from "@/../convex/_generated/api";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useSearch } from "@/hooks/useSearch";
 import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import { ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react";
@@ -14,10 +15,11 @@ import Item from "./Item";
 import UserItem from "./UserItem";
 
 export default function Navigation() {
+    const search = useSearch();
     const isMobile = useMediaQuery("(max-width: 768px)");
     const pathname = usePathname();
-
     const create = useMutation(api.documents.create);
+
     const isResizingRef = useRef(false);
     const sidebarRef = useRef<ElementRef<"aside">>(null);
     const navbarRef = useRef<ElementRef<"div">>(null);
@@ -123,7 +125,7 @@ export default function Navigation() {
                 </div>
                 <div>
                     <UserItem />
-                    <Item onClick={() => {}} label="Search" icon={Search} isSearch />
+                    <Item onClick={search.onOpen} label="Search" icon={Search} isSearch />
                     <Item onClick={() => {}} label="Settings" icon={Settings} />
                     <Item onClick={handleCreate} label="New Document" icon={PlusCircle} />
                 </div>
