@@ -7,17 +7,20 @@ import { useSettings } from "@/hooks/useSettings";
 import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import { ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { ElementRef, MouseEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 import DocumentList from "./DocumentList";
 import Item from "./Item";
+import Navbar from "./Navbar";
+import TrashBox from "./TrashBox";
 import UserItem from "./UserItem";
 
 export default function Navigation() {
     const settings = useSettings();
     const search = useSearch();
+    const params = useParams();
     const isMobile = useMediaQuery("(max-width: 768px)");
     const pathname = usePathname();
     const create = useMutation(api.documents.create);
@@ -139,7 +142,7 @@ export default function Navigation() {
                             <Item label="Trash" icon={Trash} />
                         </PopoverTrigger>
                         <PopoverContent className="w-72 p-0" side={isMobile ? "bottom" : "right"}>
-                            <p>Trash</p>
+                            <TrashBox />
                         </PopoverContent>
                     </Popover>
                 </div>
@@ -157,15 +160,19 @@ export default function Navigation() {
                     isMobile && "left-0 w-full",
                 )}
             >
-                <nav className="w-full bg-transparent px-3 py-2">
-                    {isCollapsed && (
-                        <MenuIcon
-                            onClick={resetWidth}
-                            role="button"
-                            className="h-6 w-6 text-muted-foreground"
-                        />
-                    )}
-                </nav>
+                {!!params.documentId ? (
+                    <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+                ) : (
+                    <nav className="w-full bg-transparent px-3 py-2">
+                        {isCollapsed && (
+                            <MenuIcon
+                                onClick={resetWidth}
+                                role="button"
+                                className="h-6 w-6 text-muted-foreground"
+                            />
+                        )}
+                    </nav>
+                )}
             </div>
         </>
     );

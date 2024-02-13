@@ -132,6 +132,8 @@ export const getTrash = query({
             .filter((q) => q.eq(q.field("isArchived"), true))
             .order("desc")
             .collect();
+
+        return documents;
     },
 });
 
@@ -236,6 +238,35 @@ export const remove = mutation({
         }
 
         const document = await ctx.db.delete(args.id);
+        return document;
+    },
+});
+
+export const getById = query({
+    args: { documentId: v.id("documents") },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        const document = await ctx.db.get(args.documentId);
+
+        if (!document) {
+            throw new Error("Not Found...");
+        }
+
+        if (document.isPublished && !document.isArchived) {
+            return document;
+        }
+
+        if (!identity) {
+            throw new Error("Not Authenticated User...");
+        }
+
+        const userId = identity.subject;
+
+        if (document.userId !== userId) {
+            throw new Error("Unauthorized User...");
+        }
+
         return document;
     },
 });
