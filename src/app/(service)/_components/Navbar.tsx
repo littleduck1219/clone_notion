@@ -5,6 +5,7 @@ import { MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
+import Title from "./Title";
 
 interface NavbarProps {
     isCollapsed: boolean;
@@ -36,7 +37,9 @@ export default function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
                         className="h-6 w-6 text-muted-foreground"
                     />
                 )}
-                <div className="flex w-full items-center justify-between">Navbar</div>
+                <div className="flex w-full items-center justify-between">
+                    <Title initialData={document} />
+                </div>
             </nav>
         </>
     );
