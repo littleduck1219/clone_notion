@@ -1,10 +1,11 @@
 "use client";
 
+import { api } from "@/../convex/_generated/api";
+import { Id } from "@/../convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import Banner from "./Banner";
 import Title from "./Title";
 
 interface NavbarProps {
@@ -12,7 +13,7 @@ interface NavbarProps {
     onResetWidth: () => void;
 }
 
-export default function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
+const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
     const params = useParams();
 
     const document = useQuery(api.documents.getById, {
@@ -20,7 +21,12 @@ export default function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
     });
 
     if (document === undefined) {
-        return <p>Loading...</p>;
+        return (
+            <nav className="flex w-full items-center justify-between bg-background px-3 py-2 dark:bg-[#1F1F1F]">
+                <Title.Skeleton />
+                <div className="flex items-center gap-x-2">{/* <Menu.Skeleton /> */}</div>
+            </nav>
+        );
     }
 
     if (document === null) {
@@ -29,7 +35,7 @@ export default function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
 
     return (
         <>
-            <nav className="flex w-full items-center gap-x-4 bg-background px-3 py-2 dark:bg-[#1f1f1f]">
+            <nav className="flex w-full items-center gap-x-4 bg-background px-3 py-2 dark:bg-[#1F1F1F]">
                 {isCollapsed && (
                     <MenuIcon
                         role="button"
@@ -37,10 +43,17 @@ export default function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
                         className="h-6 w-6 text-muted-foreground"
                     />
                 )}
-                <div className="flex w-full items-center justify-between">
+                <div className="flex w-full items-center justify-between dark:text-white">
                     <Title initialData={document} />
+                    <div className="flex items-center gap-x-2">
+                        {/* <Publish initialData={document} />
+                        <Menu documentId={document._id} /> */}
+                    </div>
                 </div>
             </nav>
+            {document.isArchived && <Banner documentId={document._id} />}
         </>
     );
-}
+};
+
+export default Navbar;

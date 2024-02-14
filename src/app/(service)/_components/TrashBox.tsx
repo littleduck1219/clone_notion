@@ -78,8 +78,8 @@ export default function TrashBox() {
                 />
             </div>
             <div className="mt-2 flex-grow overflow-y-auto px-1 pb-1">
-                {filteredDocuments.length > 0 ? (
-                    filteredDocuments.map((document) => (
+                {filteredDocuments && filteredDocuments.length > 0 ? (
+                    filteredDocuments?.map((document) => (
                         <div
                             key={document._id}
                             role="button"
