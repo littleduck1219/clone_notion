@@ -33,7 +33,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "convex/auth.config.js"
-  ],
+, "src/app/(service)/_components/test1.jsx", "src/app/(service)/_components/test.jsx"  ],
   "exclude": [
     "node_modules"
   ]
